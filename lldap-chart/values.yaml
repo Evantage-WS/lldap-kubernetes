@@ -1,0 +1,89 @@
+##### secret creation 
+secret:
+  create: true
+  name: lldap-credentials
+  lldapJwtSecret: "wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="
+  # default user is admin
+  lldapUserPass: "admiistrator123456"
+  lldapBaseDn: "dc=homelab,dc=es"
+
+
+##### pvc 
+persistence:
+  enabled: true               
+  storageClassName: "longhorn-rwx"
+  storageSize: "100Mi"
+  accessMode: "ReadWriteMany"
+
+
+##### deployment
+# hour zone
+env:  
+  TZ: "CET"                 
+  GID: "1001"
+  UID: "1001"
+
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 100Mi
+#  requests:
+#    cpu: 50m
+#    memory: 50M
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+replicaCount: 1
+
+image:
+  repository: "nitnelave/lldap"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+
+
+# HPA configuration
+# make sure to use RWX storage class, if use 1 replica and not hpa
+hpa:
+  enabled: true  
+  minReplicas: 1  
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 60  
+
+
+
+#### service this is unique service, so no enabled is added as if not it wont work
+service:
+  name: lldap-service
+  type: ClusterIP
+  ports:
+    - name: "3890"
+      port: 3890
+      targetPort: 3890
+    - name: "17170"
+      port: 17170
+      targetPort: 17170
+
+
+#####ingress
+ingress:
+  enabled: false
+  name: lldap-web-ingress
+  ingressClassName: nginx
+  annotations: {}
+  labels: {}
+  hosts:
+    - host: "lldap.test.com"
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+  tls:
+    - secretName: "lldap-secret-tls"
+      hosts:
+        - "lldap.test.com"
+
+
