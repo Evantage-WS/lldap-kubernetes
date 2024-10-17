@@ -10,10 +10,20 @@ secret:
 
 ##### pvc 
 persistence:
-  enabled: true               
-  storageClassName: "longhorn-rwx"
-  storageSize: "100Mi"
-  accessMode: "ReadWriteMany"
+  enabled: true              
+  storageClassName: "" 
+  storageSize: "100Mi"        
+  accessMode: "ReadWriteOnce" 
+
+  # in case the StorageClass used does not automatically provision volumes,
+  # you can specify a local path for manual mounting here like for example /mnt/data/lldap
+  # if the StorageClass supports automatic provisioning, leave this field empty.
+  localPath: "" # Local filesystem path for storage, used if 'local-path' is the SC.
+  
+  # if manualProvision is set to true, a persistentVolume is created with helm
+  # if the StorageClass used supports automatic provisioning, this should be set to false.
+  # and if it does not supports automatic provisioning, set to true. Default is false
+  manualProvision: false       
 
 
 ##### deployment
