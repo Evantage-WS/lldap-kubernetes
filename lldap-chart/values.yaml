@@ -1,0 +1,99 @@
+##### secret creation 
+secret:
+  create: true
+  name: lldap-credentials
+  lldapJwtSecret: "wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="
+  # default user is admin
+  lldapUserPass: "admiistrator123456"
+  lldapBaseDn: "dc=homelab,dc=es"
+
+
+##### pvc 
+persistence:
+  enabled: true              
+  storageClassName: "" 
+  storageSize: "100Mi"        
+  accessMode: "ReadWriteOnce" 
+
+  # in case the StorageClass used does not automatically provision volumes,
+  # you can specify a local path for manual mounting here like for example /mnt/data/lldap
+  # if the StorageClass supports automatic provisioning, leave this field empty.
+  localPath: "" # Local filesystem path for storage, used if 'local-path' is the SC.
+  
+  # if manualProvision is set to true, a persistentVolume is created with helm
+  # if the StorageClass used supports automatic provisioning, this should be set to false.
+  # and if it does not supports automatic provisioning, set to true. Default is false
+  manualProvision: false       
+
+
+##### deployment
+# hour zone
+env:  
+  TZ: "CET"                 
+  GID: "1001"
+  UID: "1001"
+
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 100Mi
+#  requests:
+#    cpu: 50m
+#    memory: 50M
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+replicaCount: 1
+
+image:
+  repository: "nitnelave/lldap"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+
+
+# HPA configuration
+# make sure to use RWX storage class, if use 1 replica and not hpa
+hpa:
+  enabled: true  
+  minReplicas: 1  
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 60  
+
+
+
+#### service this is unique service, so no enabled is added as if not it wont work
+service:
+  name: lldap-service
+  type: ClusterIP
+  ports:
+    - name: "3890"
+      port: 3890
+      targetPort: 3890
+    - name: "17170"
+      port: 17170
+      targetPort: 17170
+
+
+#####ingress
+ingress:
+  enabled: false
+  name: lldap-web-ingress
+  ingressClassName: nginx
+  annotations: {}
+  labels: {}
+  hosts:
+    - host: "lldap.test.com"
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+  tls:
+    - secretName: "lldap-secret-tls"
+      hosts:
+        - "lldap.test.com"
+
+

@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lldap
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: lldap
+  annotations:
+    lldap: https://github.com/nitnelave/lldap
+    k8s: https://github.com/Evantage-WS/lldap-kubernetes
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: lldap
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lldap
+      annotations:
+        lldap: https://github.com/nitnelave/lldap
+        k8s: https://github.com/Evantage-WS/lldap-kubernetes
+    spec:
+      containers:
+        - name: lldap
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          env:
+            - name: GID
+              value: "{{ .Values.env.GID }}"
+            - name: LLDAP_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-credentials
+                  key: lldap-jwt-secret
+            - name: LLDAP_LDAP_BASE_DN
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-credentials
+                  key: base-dn
+            - name: LLDAP_LDAP_USER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-credentials
+                  key: lldap-ldap-user-pass
+            - name: TZ
+              value: "{{ .Values.env.TZ }}"
+            - name: UID
+              value: "{{ .Values.env.UID }}"
+          ports:
+            - containerPort: 3890
+            - containerPort: 17170
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - mountPath: /data
+              name: lldap-data
+            {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: lldap-data
+          persistentVolumeClaim:
+            claimName: lldap-data
+      {{- end }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}

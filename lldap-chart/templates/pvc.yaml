@@ -1,0 +1,35 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lldap-data
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: lldap
+spec:
+  storageClassName: {{ .Values.persistence.storageClassName }}
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.storageSize }}
+{{- end }}
+
+{{- if and .Values.persistence.enabled .Values.persistence.manualProvision }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lldap-data-pv
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: lldap
+spec:
+  capacity:
+    storage: {{ .Values.persistence.storageSize }}
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  storageClassName: {{ .Values.persistence.storageClassName }}
+  hostPath:
+    path: {{ .Values.persistence.localPath }}
+{{- end }}
