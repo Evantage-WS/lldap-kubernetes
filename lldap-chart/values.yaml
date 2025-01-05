@@ -3,7 +3,7 @@ secret:
   create: true
   name: lldap-credentials
   lldapJwtSecret: "wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="
-  # default user is admin
+  lldapUserName: "admin"
   lldapUserPass: "admiistrator123456"
   lldapBaseDn: "dc=homelab,dc=es"
 

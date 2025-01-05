@@ -46,6 +46,11 @@ spec:
                 secretKeyRef:
                   name: lldap-credentials
                   key: base-dn
+            - name: LLDAP_LDAP_USER_DN
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-credentials
+                  key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:

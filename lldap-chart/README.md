@@ -87,6 +87,7 @@ The following table lists the configurable parameters of the lldap chart and the
 | `secret.create`                         | Create a new secret for credentials                          | `true`                                |
 | `secret.name`                           | Name of the secret                                           | `"lldap-credentials"`                 |
 | `secret.lldapJwtSecret`                 | JWT secret for LLDAP                                         | `"wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="` |
+| `secret.lldapUserName`                  | Username for the LDAP user                                   | `"admin"`                             |
 | `secret.lldapUserPass`                  | Password for the LDAP user                                   | `"admiistrator123456"`                |
 | `secret.lldapBaseDn`                    | Base DN for LDAP                                             | `"dc=homelab,dc=es"`                  |
 | `secret.useExisting`                    | Use an existing secret                                       | `false`                               |
