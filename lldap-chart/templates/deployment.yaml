@@ -65,6 +65,7 @@ spec:
             {{- end }}
           ports:
             - containerPort: 3890
+            - containerPort: 6360
             - containerPort: 17170
           volumeMounts:
             {{- if .Values.persistence.enabled }}
