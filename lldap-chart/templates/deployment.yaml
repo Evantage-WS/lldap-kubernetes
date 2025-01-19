@@ -60,6 +60,9 @@ spec:
               value: "{{ .Values.env.TZ }}"
             - name: UID
               value: "{{ .Values.env.UID }}"
+            {{- if .Values.extraEnv}}
+            {{- toYaml .Values.extraEnv | nindent 12}}
+            {{- end }}
           ports:
             - containerPort: 3890
             - containerPort: 17170

@@ -1,4 +1,4 @@
-##### secret creation 
+##### secret creation
 secret:
   create: true
   name: lldap-credentials
@@ -8,30 +8,32 @@ secret:
   lldapBaseDn: "dc=homelab,dc=es"
 
 
-##### pvc 
+##### pvc
 persistence:
-  enabled: true              
-  storageClassName: "" 
-  storageSize: "100Mi"        
-  accessMode: "ReadWriteOnce" 
+  enabled: true
+  storageClassName: ""
+  storageSize: "100Mi"
+  accessMode: "ReadWriteOnce"
 
   # in case the StorageClass used does not automatically provision volumes,
   # you can specify a local path for manual mounting here like for example /mnt/data/lldap
   # if the StorageClass supports automatic provisioning, leave this field empty.
   localPath: "" # Local filesystem path for storage, used if 'local-path' is the SC.
-  
+
   # if manualProvision is set to true, a persistentVolume is created with helm
   # if the StorageClass used supports automatic provisioning, this should be set to false.
   # and if it does not supports automatic provisioning, set to true. Default is false
-  manualProvision: false       
+  manualProvision: false
 
 
 ##### deployment
 # hour zone
-env:  
-  TZ: "CET"                 
+env:
+  TZ: "CET"
   GID: "1001"
   UID: "1001"
+
+extraEnv: []
 
 resources: {}
 #  limits:
@@ -58,11 +60,11 @@ image:
 # HPA configuration
 # make sure to use RWX storage class, if use 1 replica and not hpa
 hpa:
-  enabled: true  
-  minReplicas: 1  
+  enabled: true
+  minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 60
-  targetMemoryUtilizationPercentage: 60  
+  targetMemoryUtilizationPercentage: 60
 
 
 
