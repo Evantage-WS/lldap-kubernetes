@@ -25,6 +25,9 @@ persistence:
   # and if it does not supports automatic provisioning, set to true. Default is false
   manualProvision: false
 
+extraVolumes: []
+
+extraVolumeMounts: []
 
 ##### deployment
 # hour zone

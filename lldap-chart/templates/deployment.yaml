@@ -71,12 +71,20 @@ spec:
             - mountPath: /data
               name: lldap-data
             {{- end }}
-      {{- if .Values.persistence.enabled }}
+
+            {{- if .Values.extraVolumeMounts}}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12}}
+            {{- end }}
       volumes:
+        {{- if .Values.persistence.enabled}}
         - name: lldap-data
           persistentVolumeClaim:
             claimName: lldap-data
-      {{- end }}
+        {{- end }}
+
+        {{- if .Values.extraVolumes}}
+        {{- toYaml .Values.extraVolumes | nindent 8}}
+        {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
