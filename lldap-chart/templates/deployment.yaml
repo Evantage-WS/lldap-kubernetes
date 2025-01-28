@@ -39,41 +39,53 @@ spec:
             - name: LLDAP_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: lldap-credentials
+                  name: {{ .Values.secret.name }}
                   key: lldap-jwt-secret
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
-                  name: lldap-credentials
+                  name: {{ .Values.secret.name }}
                   key: base-dn
             - name: LLDAP_LDAP_USER_DN
               valueFrom:
                 secretKeyRef:
-                  name: lldap-credentials
+                  name: {{ .Values.secret.name }}
                   key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: lldap-credentials
+                  name: {{ .Values.secret.name }}
                   key: lldap-ldap-user-pass
             - name: TZ
               value: "{{ .Values.env.TZ }}"
             - name: UID
               value: "{{ .Values.env.UID }}"
+            {{- if .Values.extraEnv}}
+            {{- toYaml .Values.extraEnv | nindent 12}}
+            {{- end }}
           ports:
             - containerPort: 3890
+            - containerPort: 6360
             - containerPort: 17170
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - mountPath: /data
               name: lldap-data
             {{- end }}
-      {{- if .Values.persistence.enabled }}
+
+            {{- if .Values.extraVolumeMounts}}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12}}
+            {{- end }}
       volumes:
+        {{- if .Values.persistence.enabled}}
         - name: lldap-data
           persistentVolumeClaim:
             claimName: lldap-data
-      {{- end }}
+        {{- end }}
+
+        {{- if .Values.extraVolumes}}
+        {{- toYaml .Values.extraVolumes | nindent 8}}
+        {{- end }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
