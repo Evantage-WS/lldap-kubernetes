@@ -7,14 +7,15 @@ metadata:
   labels:
     app: lldap
 spec:
+  {{- if .Values.persistence.storageClassName }}
   storageClassName: {{ .Values.persistence.storageClassName }}
+  {{- end }}
   accessModes:
     - {{ .Values.persistence.accessMode }}
   resources:
     requests:
       storage: {{ .Values.persistence.storageSize }}
 {{- end }}
-
 {{- if and .Values.persistence.enabled .Values.persistence.manualProvision }}
 ---
 apiVersion: v1
@@ -29,7 +30,11 @@ spec:
     storage: {{ .Values.persistence.storageSize }}
   accessModes:
     - {{ .Values.persistence.accessMode }}
+  {{- if .Values.persistence.storageClassName }}
   storageClassName: {{ .Values.persistence.storageClassName }}
+  {{- end }}
+  {{- if .Values.persistence.localPath }}
   hostPath:
     path: {{ .Values.persistence.localPath }}
+  {{- end }}
 {{- end }}
