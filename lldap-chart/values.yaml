@@ -55,7 +55,7 @@ replicaCount: 1
 
 image:
   repository: "nitnelave/lldap"
-  tag: "v0.6.1"
+  # tag: "v0.6.1"
   pullPolicy: "IfNotPresent"
 
 

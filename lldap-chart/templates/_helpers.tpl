@@ -31,6 +31,14 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Define image tag to use - use .Values.image.tag if defined, otherwise use AppVersion
+*/}}
+{{- define "lldap-chart.imageTag" -}}
+{{- $vAppVersion := (printf "v%s" .Chart.AppVersion) }}
+{{- .Values.image.tag | default $vAppVersion }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "lldap-chart.labels" -}}
