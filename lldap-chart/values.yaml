@@ -85,7 +85,7 @@ service:
 
 #####ingress
 ingress:
-  enabled: false
+  enabled: true
   name: lldap-web-ingress
   ingressClassName: nginx
   annotations: {}

@@ -1,16 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.service.name }}
+  name: {{ include "lldap-chart.fullname" . }}-service
   namespace: {{ .Values.namespace }}
   labels:
     app: lldap
+    {{- include "lldap-chart.labels" . | nindent 4 }}
   annotations:
     lldap: https://github.com/nitnelave/lldap
     k8s: https://github.com/Evantage-WS/lldap-kubernetes
 spec:
   type: {{ .Values.service.type }}
   ports:
-{{ toYaml .Values.service.ports | indent 4 }}
+    {{- toYaml .Values.service.ports | nindent 4 }}
   selector:
+    {{- include "lldap-chart.selectorLabels" . | nindent 4 }}
     app: lldap

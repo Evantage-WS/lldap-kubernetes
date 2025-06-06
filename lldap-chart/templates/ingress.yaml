@@ -2,10 +2,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.name }}
+  name: {{ include "lldap-chart.fullname" . }}-ingress
   namespace: {{ .Values.namespace }}
   annotations:
-{{ toYaml .Values.ingress.annotations | indent 4 }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 {{- if .Values.ingress.labels }}
   labels:
 {{ toYaml .Values.ingress.labels | indent 4 }}
@@ -22,7 +22,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ $.Values.service.name }}
+                name: {{ include "lldap-chart.fullname" $ }}-service
                 port:
                   number: 17170
         {{- end }}

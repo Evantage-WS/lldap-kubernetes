@@ -1,10 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lldap
+  name: {{ include "lldap-chart.fullname" . }}-deployment
   namespace: {{ .Values.namespace }}
   labels:
     app: lldap
+    {{- include "lldap-chart.labels" . | nindent 4 }}
   annotations:
     lldap: https://github.com/nitnelave/lldap
     k8s: https://github.com/Evantage-WS/lldap-kubernetes
@@ -19,6 +20,7 @@ spec:
     metadata:
       labels:
         app: lldap
+        {{- include "lldap-chart.selectorLabels" . | nindent 8 }}
       annotations:
         lldap: https://github.com/nitnelave/lldap
         k8s: https://github.com/Evantage-WS/lldap-kubernetes
@@ -39,22 +41,22 @@ spec:
             - name: LLDAP_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: {{ include "lldap-chart.fullname" . }}-secret
                   key: lldap-jwt-secret
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: {{ include "lldap-chart.fullname" . }}-secret
                   key: base-dn
             - name: LLDAP_LDAP_USER_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: {{ include "lldap-chart.fullname" . }}-secret
                   key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: {{ include "lldap-chart.fullname" . }}-secret
                   key: lldap-ldap-user-pass
             - name: TZ
               value: "{{ .Values.env.TZ }}"
@@ -80,7 +82,7 @@ spec:
         {{- if .Values.persistence.enabled}}
         - name: lldap-data
           persistentVolumeClaim:
-            claimName: lldap-data
+            claimName: {{ include "lldap-chart.fullname" . }}-data
         {{- end }}
 
         {{- if .Values.extraVolumes}}
