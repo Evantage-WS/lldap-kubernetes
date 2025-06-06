@@ -2,11 +2,10 @@
 secret:
   create: true
   name: lldap-credentials
-  lldapJwtSecret: "wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="
+  # lldapJwtSecret: "replace-me"
   lldapUserName: "admin"
-  lldapUserPass: "admiistrator123456"
-  lldapBaseDn: "dc=homelab,dc=es"
-
+  # lldapUserPass: "replace-me"
+  lldapBaseDn: "dc=homelab,dc=home"
 
 ##### pvc
 persistence:

@@ -59,3 +59,41 @@ And in your browser go to http://127.0.0.1:17170. Login with admin and the passw
 For creating user and groups, please look at the LLDAP documentation at https://github.com/nitnelave/lldap
 
 Good luck!
+
+## Using the helm chart
+
+### Required values and recommended values
+
+Always create your own secrets and usernames:
+```yaml
+secret:
+  lldapJwtSecret: "replace-me"
+  lldapUserName: "admin" # this has a default value but can be overridden
+  lldapUserPass: "replace-me"
+  lldapBaseDn: "dc=homelab,dc=home" # this has a default value but can be overridden
+```
+
+Set your own ingress values:
+```yaml
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations: {}
+  labels: {}
+  hosts:
+    - host: "lldap.test.com"
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+  tls:
+    - secretName: "lldap-secret-tls"
+      hosts:
+        - "lldap.test.com"
+```
+
+### Install the chart
+
+```bash
+```
+helm install lldap-chart https://github.com/Evantage-WS/lldap-kubernetes/releases/download/lldap-chart-0.3.4/lldap-chart-0.3.4.tgz
+```
