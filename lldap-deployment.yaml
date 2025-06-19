@@ -58,4 +58,3 @@ spec:
         - name: lldap-data
           persistentVolumeClaim:
             claimName: lldap-data
-
