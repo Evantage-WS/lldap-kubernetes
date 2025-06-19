@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Release.Name }}-hpa
+  name: {{ include "lldap-chart.fullname" . }}-hpa
   namespace: {{ .Values.namespace }}
 spec:
   scaleTargetRef:
