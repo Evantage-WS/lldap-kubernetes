@@ -41,22 +41,22 @@ spec:
             - name: LLDAP_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
                   key: lldap-jwt-secret
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
                   key: base-dn
             - name: LLDAP_LDAP_USER_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
                   key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
                   key: lldap-ldap-user-pass
             - name: TZ
               value: "{{ .Values.env.TZ }}"
