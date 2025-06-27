@@ -93,7 +93,6 @@ The following table lists the configurable parameters of the lldap chart and the
 | `secret.lldapUserPass`                  | Password for the LDAP user                                 | `"admiistrator123456"`                           |
 | `secret.lldapBaseDn`                    | Base DN for LDAP                                           | `"dc=homelab,dc=es"`                             |
 | `secret.useExisting`                    | Use an existing secret                                     | `false`                                          |
-| `secret.existingSecretName`             | Name of the existing secret                                | `""`                                             |
 
 ### How to Configure
 
