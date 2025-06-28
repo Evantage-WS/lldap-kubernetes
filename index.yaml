@@ -3,6 +3,16 @@ entries:
   lldap-chart:
   - apiVersion: v2
     appVersion: 0.6.1
+    created: "2025-06-28T08:50:03.070362219Z"
+    description: lldap - Light LDAP implementation for authentication
+    digest: 2cf52b5087dca209a28f7dd713d6e7ef2bed5ab10cdf60babb63eb9fc0f0e906
+    name: lldap-chart
+    type: application
+    urls:
+    - https://github.com/Evantage-WS/lldap-kubernetes/releases/download/lldap-chart-0.3.5/lldap-chart-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v2
+    appVersion: 0.6.1
     created: "2025-06-19T16:58:04.862172993Z"
     description: lldap - Light LDAP implementation for authentication
     digest: 9bb2a26e49cb5af379a80a3d4a60823f0b4ef23aa7bc7932157e0f82a29cc95e
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/Evantage-WS/lldap-kubernetes/releases/download/lldap-chart-0.3.4/lldap-chart-0.3.4.tgz
     version: 0.3.4
-generated: "2025-06-19T16:58:04.862177722Z"
+generated: "2025-06-28T08:50:03.070374863Z"
