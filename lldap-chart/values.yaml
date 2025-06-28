@@ -1,6 +1,7 @@
 ##### secret creation
 secret:
   create: true
+  useExisting: false
   name: lldap-credentials
   # lldapJwtSecret: "replace-me"
   lldapUserName: "admin"
@@ -99,5 +100,3 @@ ingress:
     - secretName: "lldap-secret-tls"
       hosts:
         - "lldap.test.com"
-
-
