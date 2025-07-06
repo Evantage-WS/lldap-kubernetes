@@ -24,7 +24,7 @@ spec:
               service:
                 name: {{ include "lldap.fullname" $ }}-service
                 port:
-                  number: {{ (index .Values.service.ports 1).port }}
+                  number: {{ (index $.Values.service.ports 1).port }}
         {{- end }}
   {{- end }}
   tls:
