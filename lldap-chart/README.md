@@ -1,6 +1,6 @@
-# lldap Helm Chart
+# LLDAP Helm Chart
 
-A Helm chart for deploying [lldap](https://github.com/nitnelave/lldap) a lightweight LDAP server on Kubernetes.
+A Helm chart for deploying [lldap](https://github.com/nitnelave/lldap), a lightweight LDAP server, on Kubernetes.
 
 ## Table of Contents
 
@@ -23,28 +23,30 @@ A Helm chart for deploying [lldap](https://github.com/nitnelave/lldap) a lightwe
 1. **Add the Helm repository** (if hosted in a repository):
 
    ```bash
-        echo "not available at the moment"
+   echo "Not available at the moment"
    ```
 
 2. **Install the chart**:
 
    ```bash
-    helm install lldap ./lldap-chart --namespace lldap-namespace
-
+   helm install lldap ./lldap -n lldap-namespace --create-namespace
    ```
+
+> 💡 You may change `lldap` and `lldap-namespace` to match your environment.
 
 ## Uninstallation
 
-To uninstall/delete the `lldap` deployment:
+To uninstall the chart and delete all related resources:
 
 ```bash
-helm uninstall lldap  -n lldap-namespace
+helm uninstall lldap -n lldap-namespace
 ```
 
 The command removes all Kubernetes components associated with the chart and deletes the release.
 
 ## Configuration
 
+You can configure this chart using either `--set` flags or a custom `values.yaml` file.
 The following table lists the configurable parameters of the lldap chart and their default values.
 
 ### Parameters
@@ -90,25 +92,27 @@ The following table lists the configurable parameters of the lldap chart and the
 | `secret.name`                           | Name of the secret                                         | `"lldap-credentials"`                            |
 | `secret.lldapJwtSecret`                 | JWT secret for LLDAP                                       | `"wobY6RK/Dc0vL21zFiIZs9iyVy0NQ3ldijYPQ4HLWTc="` |
 | `secret.lldapUserName`                  | Username for the LDAP user                                 | `"admin"`                                        |
-| `secret.lldapUserPass`                  | Password for the LDAP user                                 | `"admiistrator123456"`                           |
+| `secret.lldapUserPass`                  | Password for the LDAP user                                 | `"administrator123456"`                          |
 | `secret.lldapBaseDn`                    | Base DN for LDAP                                           | `"dc=homelab,dc=es"`                             |
 | `secret.useExisting`                    | Use an existing secret                                     | `false`                                          |
 
 ### How to Configure
 
+#### Using `--set`:
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```bash
-helm install my-ldapp ./lldap-chart \
+helm install lldap ./lldap \
   --set replicaCount=2 \
   --set image.tag=latest \
   --set persistence.enabled=false
 ```
 
+#### Using a custom values file:
 Alternatively, you can provide a YAML file with custom values:
 
 ```bash
-helm install my-ldapp ./lldap-chart -f custom-values.yaml
+helm install lldap ./lldap -f custom-values.yaml
 ```
 
 Thanks for taking your time to reading!

@@ -1,11 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "lldap-chart.fullname" . }}-deployment
-  namespace: {{ .Values.namespace }}
+  name: {{ include "lldap.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: lldap
-    {{- include "lldap-chart.labels" . | nindent 4 }}
+    {{- include "lldap.labels" . | nindent 4 }}
   annotations:
     lldap: https://github.com/nitnelave/lldap
     k8s: https://github.com/Evantage-WS/lldap-kubernetes
@@ -13,57 +12,54 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: lldap
+      {{- include "lldap.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: lldap
-        {{- include "lldap-chart.selectorLabels" . | nindent 8 }}
+        {{- include "lldap.selectorLabels" . | nindent 8 }}
       annotations:
         lldap: https://github.com/nitnelave/lldap
         k8s: https://github.com/Evantage-WS/lldap-kubernetes
     spec:
       containers:
         - name: lldap
-          image: "{{ .Values.image.repository }}:{{ include "lldap-chart.imageTag" . }}"
+          image: "{{ .Values.image.repository }}:{{ include "lldap.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-
           env:
             - name: GID
               value: "{{ .Values.env.GID }}"
+            - name: UID
+              value: "{{ .Values.env.UID }}"
+            - name: TZ
+              value: "{{ .Values.env.TZ }}"
             - name: LLDAP_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
                   key: lldap-jwt-secret
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
                   key: base-dn
             - name: LLDAP_LDAP_USER_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
                   key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap-chart.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
                   key: lldap-ldap-user-pass
-            - name: TZ
-              value: "{{ .Values.env.TZ }}"
-            - name: UID
-              value: "{{ .Values.env.UID }}"
-            {{- if .Values.extraEnv}}
-            {{- toYaml .Values.extraEnv | nindent 12}}
+            {{- if .Values.extraEnv }}
+            {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
           ports:
             - containerPort: 3890
@@ -74,31 +70,26 @@ spec:
             - mountPath: /data
               name: lldap-data
             {{- end }}
-
-            {{- if .Values.extraVolumeMounts}}
-            {{- toYaml .Values.extraVolumeMounts | nindent 12}}
+            {{- if .Values.extraVolumeMounts }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
       volumes:
-        {{- if .Values.persistence.enabled}}
+        {{- if .Values.persistence.enabled }}
         - name: lldap-data
           persistentVolumeClaim:
-            claimName: {{ include "lldap-chart.fullname" . }}-data
+            claimName: {{ include "lldap.fullname" . }}-data
         {{- end }}
-
-        {{- if .Values.extraVolumes}}
-        {{- toYaml .Values.extraVolumes | nindent 8}}
+        {{- if .Values.extraVolumes }}
+        {{- toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

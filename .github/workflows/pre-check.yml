@@ -1,0 +1,31 @@
+name: Helm Chart Pre-Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'lldap-chart/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'lldap-chart/**'
+
+jobs:
+  helm-precheck:
+    runs-on: ubuntu-latest
+    name: Helm Lint & Template Test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Helm Lint
+        run: helm lint ./lldap-chart
+
+      - name: Helm Template Dry-Run
+        run: helm template lldap ./lldap-chart --namespace default
