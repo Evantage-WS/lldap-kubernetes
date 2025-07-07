@@ -41,22 +41,22 @@ spec:
             - name: LLDAP_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-jwt-secret
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: base-dn
             - name: LLDAP_LDAP_USER_DN
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-ldap-user-name
             - name: LLDAP_LDAP_USER_PASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}-secret{{ end }}
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-ldap-user-pass
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
@@ -77,7 +77,7 @@ spec:
         {{- if .Values.persistence.enabled }}
         - name: lldap-data
           persistentVolumeClaim:
-            claimName: {{ include "lldap.fullname" . }}-data-pvc
+            claimName: {{ include "lldap.fullname" . }}
         {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}

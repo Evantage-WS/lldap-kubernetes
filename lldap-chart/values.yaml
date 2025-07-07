@@ -78,7 +78,6 @@ service:
 ##### Ingress definition
 ingress:
   enabled: true
-  name: lldap-web-ingress
   ingressClassName: traefik
   annotations: {}
   labels: {}

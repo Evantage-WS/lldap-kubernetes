@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "lldap.fullname" . }}-ingress
+  name: {{ include "lldap.fullname" . }}
   namespace: {{ .Release.Namespace }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
@@ -22,7 +22,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "lldap.fullname" $ }}-service
+                name: {{ include "lldap.fullname" $ }}
                 port:
                   number: {{ (index $.Values.service.ports 1).port }}
         {{- end }}
