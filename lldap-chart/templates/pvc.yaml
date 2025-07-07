@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "lldap.fullname" . }}-data-pvc
+  name: {{ include "lldap.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "lldap.labels" . | nindent 4 }}
@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "lldap.fullname" . }}-data-pv
+  name: {{ include "lldap.fullname" . }}
   labels:
     {{- include "lldap.labels" . | nindent 4 }}
 spec:
