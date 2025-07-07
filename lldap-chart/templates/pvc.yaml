@@ -2,11 +2,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "lldap-chart.fullname" . }}-data
-  namespace: {{ .Values.namespace }}
+  name: {{ include "lldap.fullname" . }}-data-pvc
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: lldap
-    {{- include "lldap-chart.labels" . | nindent 4 }}
+    {{- include "lldap.labels" . | nindent 4 }}
 spec:
   {{- if .Values.persistence.storageClassName }}
   storageClassName: {{ .Values.persistence.storageClassName }}
@@ -17,16 +16,15 @@ spec:
     requests:
       storage: {{ .Values.persistence.storageSize }}
 {{- end }}
+
 {{- if and .Values.persistence.enabled .Values.persistence.manualProvision }}
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "lldap-chart.fullname" . }}-data-pv
-  namespace: {{ .Values.namespace }}
+  name: {{ include "lldap.fullname" . }}-data-pv
   labels:
-    app: lldap
-    {{- include "lldap-chart.labels" . | nindent 4 }}
+    {{- include "lldap.labels" . | nindent 4 }}
 spec:
   capacity:
     storage: {{ .Values.persistence.storageSize }}

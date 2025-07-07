@@ -2,14 +2,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "lldap-chart.fullname" . }}-ingress
-  namespace: {{ .Values.namespace }}
+  name: {{ include "lldap.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
-{{- if .Values.ingress.labels }}
+  {{- if .Values.ingress.labels }}
   labels:
-{{ toYaml .Values.ingress.labels | indent 4 }}
-{{- end }}
+    {{- toYaml .Values.ingress.labels | nindent 4 }}
+  {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
   rules:
@@ -22,17 +22,17 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "lldap-chart.fullname" $ }}-service
+                name: {{ include "lldap.fullname" $ }}-service
                 port:
-                  number: 17170
+                  number: {{ (index $.Values.service.ports 1).port }}
         {{- end }}
   {{- end }}
   tls:
   {{- range .Values.ingress.tls }}
     - hosts:
-      {{- range .hosts }}
+        {{- range .hosts }}
         - {{ . }}
-      {{- end }}
+        {{- end }}
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}

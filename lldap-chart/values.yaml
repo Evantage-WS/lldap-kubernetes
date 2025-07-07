@@ -1,14 +1,14 @@
-##### secret creation
+##### Secret configuration
 secret:
   create: true
   useExisting: false
   name: lldap-credentials
-  # lldapJwtSecret: "replace-me"
+  lldapJwtSecret: "replace-this-with-a-real-jwt-secret"
   lldapUserName: "admin"
-  # lldapUserPass: "replace-me"
+  lldapUserPass: "replace-this-with-a-secure-password"
   lldapBaseDn: "dc=homelab,dc=home"
 
-##### pvc
+##### PersistentVolumeClaim configuration
 persistence:
   enabled: true
   storageClassName: ""
@@ -26,11 +26,9 @@ persistence:
   manualProvision: false
 
 extraVolumes: []
-
 extraVolumeMounts: []
 
-##### deployment
-# hour zone
+##### Pod environment / deployment
 env:
   TZ: "CET"
   GID: "1001"
@@ -38,18 +36,16 @@ env:
 
 extraEnv: []
 
-resources: {}
-#  limits:
-#    cpu: 100m
-#    memory: 100Mi
-#  requests:
-#    cpu: 50m
-#    memory: 50M
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
 
 replicaCount: 1
@@ -59,8 +55,7 @@ image:
   # tag: "v0.6.1"
   pullPolicy: "IfNotPresent"
 
-
-# HPA configuration
+##### Horizontal Pod Autoscaler
 # make sure to use RWX storage class, if use 1 replica and not hpa
 hpa:
   enabled: true
@@ -69,33 +64,29 @@ hpa:
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 60
 
-
-
-#### service this is unique service, so no enabled is added as if not it wont work
+##### Service definition
 service:
-  name: lldap-service
   type: ClusterIP
   ports:
-    - name: "3890"
+    - name: ldap
       port: 3890
       targetPort: 3890
-    - name: "17170"
+    - name: web
       port: 17170
       targetPort: 17170
 
-
-#####ingress
+##### Ingress definition
 ingress:
   enabled: true
   name: lldap-web-ingress
-  ingressClassName: nginx
+  ingressClassName: traefik
   annotations: {}
   labels: {}
   hosts:
     - host: "lldap.test.com"
       paths:
         - path: "/"
-          pathType: "Prefix"
+          pathType: Prefix
   tls:
     - secretName: "lldap-secret-tls"
       hosts:
