@@ -94,6 +94,5 @@ ingress:
 ### Install the chart
 
 ```bash
-```
 helm install lldap-chart https://github.com/Evantage-WS/lldap-kubernetes/releases/download/lldap-chart-0.3.4/lldap-chart-0.3.4.tgz
 ```
