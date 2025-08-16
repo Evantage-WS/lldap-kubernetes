@@ -97,3 +97,21 @@ ingress:
 ```bash
 helm install lldap-chart https://github.com/Evantage-WS/lldap-kubernetes/releases/download/lldap-chart-0.3.4/lldap-chart-0.3.4.tgz
 ```
+
+### Known issues
+
+There is 2 types of images of lldap - root and rootless. It's possible you may see below error:
+```
+│ [entrypoint] Copying the default config to /data/lldap_config.toml
+│ [entrypoint] Edit this file to configure LLDAP.
+│ > Setup permissions..
+│ chown: /data: Operation not permitted
+│ chown: /data/lldap_config.toml: Operation not permitted
+│ stream closed EOF for lldap-second/lldap-chart-deployment-5c877d4667-74vd2 (lldap)
+```
+
+In order to get rid of this error, you can try to use "rootless" image. In order to do that, in ```values.yaml``` put "*-rootless" into ```image.tag``` value. Example:
+```
+image:
+  tag: "v0.6.1-alpine-rootless"
+```
