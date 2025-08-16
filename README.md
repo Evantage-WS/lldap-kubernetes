@@ -64,10 +64,11 @@ Good luck!
 
 ### Required values and recommended values
 
-Always create your own secrets and usernames:
+In order to generate JwtSecret and KeySeed, you can use [this](https://github.com/lldap/lldap/blob/main/generate_secrets.sh) script. Always create your own secrets and usernames:
 ```yaml
 secret:
   lldapJwtSecret: "replace-me"
+  lldapKeySeed: "replace-me"
   lldapUserName: "admin" # this has a default value but can be overridden
   lldapUserPass: "replace-me"
   lldapBaseDn: "dc=homelab,dc=home" # this has a default value but can be overridden

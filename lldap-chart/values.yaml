@@ -4,6 +4,7 @@ secret:
   useExisting: false
   name: lldap-credentials
   lldapJwtSecret: "replace-this-with-a-real-jwt-secret"
+  lldapKeySeed: "replace-me"
   lldapUserName: "admin"
   lldapUserPass: "replace-this-with-a-secure-password"
   lldapBaseDn: "dc=homelab,dc=home"
