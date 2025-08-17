@@ -18,11 +18,13 @@ secrets, the pod will not be up and running
 ```
 NAMESPACE=lldap # in which namespace the lldap container will be installed, always use lowercase
 LLDAP_JWT_SECRET=<some random value>
+LLDAP_KEY_SEED=<some random value>
 LLDAP_LDAP_USER_PASS=admin # change if wanted
 LLDAP_BASE_DN=dc=evantage,dc=nl # set your own is wanted
 
 kubectl create secret generic lldap-credentials \
   --from-literal=lldap-jwt-secret=${LLDAP_JWT_SECRET} \
+  --from-literal=lldap-key-seed=${LLDAP_KEY_SEED}
   --from-literal=lldap-ldap-user-pass=${LLDAP_LDAP_USER_PASS} \
   --from-literal=base-dn=${LLDAP_BASE_DN} \
   -n ${NAMESPACE}
