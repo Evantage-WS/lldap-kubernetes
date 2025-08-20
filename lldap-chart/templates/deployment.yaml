@@ -43,11 +43,6 @@ spec:
                 secretKeyRef:
                   name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-jwt-secret
-            - name: LLDAP_KEY_SEED
-              valueFrom:
-                secretKeyRef:
-                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
-                  key: lldap-key-seed
             - name: LLDAP_LDAP_BASE_DN
               valueFrom:
                 secretKeyRef:
@@ -63,6 +58,20 @@ spec:
                 secretKeyRef:
                   name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-ldap-user-pass
+            {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+            - name: LLDAP_LDAPS_OPTIONS__ENABLED
+              value: {{ .Values.env.LDAPS_OPTIONS__ENABLED }}
+            - name: LLDAP_LDAPS_OPTIONS__CERT_FILE
+              value: {{ .Values.env.LDAPS_OPTIONS__CERT_FILE}}
+            - name: LLDAP_LDAPS_OPTIONS__KEY_FILE
+              value: {{ .Values.env.LDAPS_OPTIONS__KEY_FILE}}
+            {{- else }}
+            - name: LLDAP_KEY_SEED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
+                  key: lldap-key-seed
+            {{- end }}
             {{- if .Values.extraEnv }}
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}

@@ -34,6 +34,9 @@ env:
   TZ: "CET"
   GID: "1001"
   UID: "1001"
+  LDAPS_OPTIONS__ENABLED: false
+  LDAPS_OPTIONS__CERT_FILE: "/path/to/certfile.crt"
+  LDAPS_OPTIONS__KEY_FILE: "/path/to/keyfile.key"
 
 extraEnv: []
 
