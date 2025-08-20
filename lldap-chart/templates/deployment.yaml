@@ -60,11 +60,11 @@ spec:
                   key: lldap-ldap-user-pass
             {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
             - name: LLDAP_LDAPS_OPTIONS__ENABLED
-              value: {{ .Values.env.LDAPS_OPTIONS__ENABLED }}
+              value: {{ .Values.env.LDAPS_OPTIONS__ENABLED | quote }}
             - name: LLDAP_LDAPS_OPTIONS__CERT_FILE
-              value: {{ .Values.env.LDAPS_OPTIONS__CERT_FILE}}
+              value: {{ .Values.env.LDAPS_OPTIONS__CERT_FILE }}
             - name: LLDAP_LDAPS_OPTIONS__KEY_FILE
-              value: {{ .Values.env.LDAPS_OPTIONS__KEY_FILE}}
+              value: {{ .Values.env.LDAPS_OPTIONS__KEY_FILE }}
             {{- else }}
             - name: LLDAP_KEY_SEED
               valueFrom:
