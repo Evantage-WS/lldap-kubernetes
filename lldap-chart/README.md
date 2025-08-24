@@ -60,6 +60,9 @@ The following table lists the configurable parameters of the lldap chart and the
 | `env.TZ`                                | Timezone for the application                               | `"CET"`                                          |
 | `env.GID`                               | Group ID                                                   | `"1001"`                                         |
 | `env.UID`                               | User ID                                                    | `"1001"`                                         |
+| `env.LDAPS_OPTIONS__ENABLED`            | Enable LDAPS configuration options                         | `false`                                          |
+| `env.LDAPS_OPTIONS__CERT_FILE`          | LDAPS certificate file path                                | `"/path/to/certfile.crt"`                        |
+| `env.LDAPS_OPTIONS__KEY_FILE`           | LDAPS key file path                                        | `"/path/to/keyfile.key"`                         |
 | `extraEnv`                              | Extra environment variables to be set on lldap container   | `[]`                                             |
 | `persistence.enabled`                   | Enable persistent storage                                  | `true`                                           |
 | `persistence.storageClassName`          | Storage class name                                         | `""`                                             |
