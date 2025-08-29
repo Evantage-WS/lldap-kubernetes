@@ -12,6 +12,12 @@ secret:
 ##### PersistentVolumeClaim configuration
 persistence:
   enabled: true
+  
+  # if existingVolumeClaim is set to the name of a PVC in the namespace, this will be used, 
+  # instead of creating a new one.
+
+  existingVolumeClaim: ""
+
   storageClassName: ""
   storageSize: "100Mi"
   accessMode: "ReadWriteOnce"

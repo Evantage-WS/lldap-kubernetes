@@ -89,9 +89,15 @@ spec:
             {{- end }}
       volumes:
         {{- if .Values.persistence.enabled }}
+          {{- if .Values.persistence.existingVolumeClaim }}
+        - name: lldap-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingVolumeClaim }}
+          {{- else }}
         - name: lldap-data
           persistentVolumeClaim:
             claimName: {{ include "lldap.fullname" . }}
+          {{- end }}
         {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}

@@ -65,6 +65,7 @@ The following table lists the configurable parameters of the lldap chart and the
 | `env.LDAPS_OPTIONS__KEY_FILE`           | LDAPS key file path                                        | `"/path/to/keyfile.key"`                         |
 | `extraEnv`                              | Extra environment variables to be set on lldap container   | `[]`                                             |
 | `persistence.enabled`                   | Enable persistent storage                                  | `true`                                           |
+| `persistence.existingVolumeClaim`       | Existing PVC name                                          | `""`                                             |
 | `persistence.storageClassName`          | Storage class name                                         | `""`                                             |
 | `persistence.storageSize`               | Storage size                                               | `"100Mi"`                                        |
 | `persistence.accessMode`                | Access mode for the PVC                                    | `"ReadWriteOnce"`                                |
