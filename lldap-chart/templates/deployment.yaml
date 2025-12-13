@@ -26,6 +26,7 @@ spec:
       serviceAccountName: {{ include "lldap.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      enableServiceLinks: false
       containers:
         - name: lldap
           image: "{{ .Values.image.repository }}:{{ include "lldap.imageTag" . }}"
