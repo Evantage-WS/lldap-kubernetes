@@ -107,3 +107,14 @@ serviceAccount:
 ##### Security context
 podSecurityContext: {}
 securityContext: {}
+
+##### Network policies
+
+networkPolicy:
+  enabled: false
+  policyTypes:
+    - "Ingress"
+    - "Egress"
+  ingress:
+    - {}
+  egress: []
