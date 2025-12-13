@@ -23,6 +23,9 @@ spec:
         lldap: https://github.com/nitnelave/lldap
         k8s: https://github.com/Evantage-WS/lldap-kubernetes
     spec:
+      serviceAccountName: {{ include "lldap.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: lldap
           image: "{{ .Values.image.repository }}:{{ include "lldap.imageTag" . }}"
@@ -31,6 +34,8 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           env:
             - name: GID
               value: "{{ .Values.env.GID }}"
