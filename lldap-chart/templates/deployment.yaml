@@ -98,6 +98,15 @@ spec:
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
+          {{- if .Values.probes.enabled }}
+          livenessProbe:
+            exec:
+              command:
+              - /app/lldap
+              - healthcheck
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          {{- end }}
       volumes:
         {{- if .Values.persistence.enabled }}
           {{- if .Values.persistence.existingVolumeClaim }}

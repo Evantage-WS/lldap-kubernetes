@@ -109,7 +109,6 @@ podSecurityContext: {}
 securityContext: {}
 
 ##### Network policies
-
 networkPolicy:
   enabled: false
   policyTypes:
@@ -118,3 +117,7 @@ networkPolicy:
   ingress:
     - {}
   egress: []
+
+##### Status probes
+probes:
+  enabled: true
