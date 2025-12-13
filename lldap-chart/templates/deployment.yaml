@@ -81,9 +81,14 @@ spec:
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
           ports:
-            - containerPort: 3890
-            - containerPort: 6360
-            - containerPort: 17170
+            - name: ldap
+              containerPort: {{ .Values.service.ports.ldap }}
+            {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+            - name: ldaps
+              containerPort: {{ .Values.service.ports.ldaps }}
+            {{- end }}
+            - name: web
+              containerPort: {{ .Values.service.ports.web }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - mountPath: /data

@@ -78,12 +78,9 @@ hpa:
 service:
   type: ClusterIP
   ports:
-    - name: ldap
-      port: 3890
-      targetPort: 3890
-    - name: web
-      port: 17170
-      targetPort: 17170
+    ldap: 3890
+    ldaps: 6360
+    web: 17170
 
 ##### Ingress definition
 ingress:
