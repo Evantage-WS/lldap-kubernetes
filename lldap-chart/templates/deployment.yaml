@@ -64,13 +64,17 @@ spec:
                 secretKeyRef:
                   name: {{ if .Values.secret.useExisting }}{{ .Values.secret.name }}{{ else }}{{ include "lldap.fullname" . }}{{ end }}
                   key: lldap-ldap-user-pass
-            {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+            {{- if include "lldap.sslEnabled" . }}
             - name: LLDAP_LDAPS_OPTIONS__ENABLED
-              value: {{ .Values.env.LDAPS_OPTIONS__ENABLED | quote }}
+              value: {{ include "lldap.sslEnabled" . | quote }}
+            {{- if .Values.certmanager.enabled }}
+            {{- include "lldap.certmanager.env" . | nindent 12 }}
+            {{- else }}
             - name: LLDAP_LDAPS_OPTIONS__CERT_FILE
               value: {{ .Values.env.LDAPS_OPTIONS__CERT_FILE }}
             - name: LLDAP_LDAPS_OPTIONS__KEY_FILE
               value: {{ .Values.env.LDAPS_OPTIONS__KEY_FILE }}
+            {{- end }}
             {{- else }}
             - name: LLDAP_KEY_SEED
               valueFrom:
@@ -84,7 +88,7 @@ spec:
           ports:
             - name: ldap
               containerPort: {{ .Values.service.ports.ldap }}
-            {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+            {{- if include "lldap.sslEnabled" . }}
             - name: ldaps
               containerPort: {{ .Values.service.ports.ldaps }}
             {{- end }}
@@ -95,6 +99,7 @@ spec:
             - mountPath: /data
               name: lldap-data
             {{- end }}
+            {{- include "lldap.certmanager.volumeMounts" . | nindent 12 }}
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
@@ -119,6 +124,7 @@ spec:
             claimName: {{ include "lldap.fullname" . }}
           {{- end }}
         {{- end }}
+        {{- include "lldap.certmanager.volumes" . | nindent 8 }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
