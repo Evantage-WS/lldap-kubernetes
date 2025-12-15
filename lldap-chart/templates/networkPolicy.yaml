@@ -1,0 +1,23 @@
+{{ if .Values.networkPolicy.enabled -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "lldap.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "lldap.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "lldap.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  {{- range .Values.networkPolicy.policyTypes }}
+  - {{ . }}
+  {{- end }}
+  {{- with $ingress := .Values.networkPolicy.ingress }}
+  ingress: {{ toYaml $ingress | nindent 4 }}
+  {{- end }}
+  {{- with $egress := .Values.networkPolicy.egress }}
+  egress: {{- toYaml $egress | nindent 4 }}
+  {{- end }}
+{{- end -}}

@@ -12,8 +12,8 @@ secret:
 ##### PersistentVolumeClaim configuration
 persistence:
   enabled: true
-  
-  # if existingVolumeClaim is set to the name of a PVC in the namespace, this will be used, 
+
+  # if existingVolumeClaim is set to the name of a PVC in the namespace, this will be used,
   # instead of creating a new one.
 
   existingVolumeClaim: ""
@@ -78,12 +78,9 @@ hpa:
 service:
   type: ClusterIP
   ports:
-    - name: ldap
-      port: 3890
-      targetPort: 3890
-    - name: web
-      port: 17170
-      targetPort: 17170
+    ldap: 3890
+    ldaps: 6360
+    web: 17170
 
 ##### Ingress definition
 ingress:
@@ -100,3 +97,27 @@ ingress:
     - secretName: "lldap-secret-tls"
       hosts:
         - "lldap.test.com"
+
+##### Service account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+##### Security context
+podSecurityContext: {}
+securityContext: {}
+
+##### Network policies
+networkPolicy:
+  enabled: false
+  policyTypes:
+    - "Ingress"
+    - "Egress"
+  ingress:
+    - {}
+  egress: []
+
+##### Status probes
+probes:
+  enabled: true

@@ -11,6 +11,16 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    {{- toYaml .Values.service.ports | nindent 4 }}
+    - name: ldap
+      port: {{ .Values.service.ports.ldap }}
+      targetPort: ldap
+    {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+    - name: ldaps
+      port: {{ .Values.service.ports.ldaps }}
+      targetPort: ldaps
+    {{- end }}
+    - name: web
+      port: {{ .Values.service.ports.web }}
+      targetPort: web
   selector:
     {{- include "lldap.selectorLabels" . | nindent 4 }}

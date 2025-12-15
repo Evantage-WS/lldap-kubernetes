@@ -23,6 +23,10 @@ spec:
         lldap: https://github.com/nitnelave/lldap
         k8s: https://github.com/Evantage-WS/lldap-kubernetes
     spec:
+      serviceAccountName: {{ include "lldap.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      enableServiceLinks: false
       containers:
         - name: lldap
           image: "{{ .Values.image.repository }}:{{ include "lldap.imageTag" . }}"
@@ -31,6 +35,8 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           env:
             - name: GID
               value: "{{ .Values.env.GID }}"
@@ -76,9 +82,14 @@ spec:
             {{- toYaml .Values.extraEnv | nindent 12 }}
             {{- end }}
           ports:
-            - containerPort: 3890
-            - containerPort: 6360
-            - containerPort: 17170
+            - name: ldap
+              containerPort: {{ .Values.service.ports.ldap }}
+            {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+            - name: ldaps
+              containerPort: {{ .Values.service.ports.ldaps }}
+            {{- end }}
+            - name: web
+              containerPort: {{ .Values.service.ports.web }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - mountPath: /data
@@ -87,6 +98,15 @@ spec:
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
             {{- end }}
+          {{- if .Values.probes.enabled }}
+          livenessProbe:
+            exec:
+              command:
+              - /app/lldap
+              - healthcheck
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          {{- end }}
       volumes:
         {{- if .Values.persistence.enabled }}
           {{- if .Values.persistence.existingVolumeClaim }}
