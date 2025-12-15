@@ -14,7 +14,7 @@ spec:
     - name: ldap
       port: {{ .Values.service.ports.ldap }}
       targetPort: ldap
-    {{- if .Values.env.LDAPS_OPTIONS__ENABLED }}
+    {{- if include "lldap.sslEnabled" . }}
     - name: ldaps
       port: {{ .Values.service.ports.ldaps }}
       targetPort: ldaps
