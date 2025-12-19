@@ -73,7 +73,10 @@ Create the name of the service account to use
 Create helper to check if LDAPS is enabled or not
 */}}
 {{- define "lldap.sslEnabled" -}}
-{{- if or .Values.env.LDAPS_OPTIONS__ENABLED .Values.certmanager.enabled }}
+{{- if or 
+    (eq (.Values.env.LDAPS_OPTIONS__ENABLED | toString) "true")
+    .Values.certmanager.enabled 
+}}
     {{- true -}}
 {{- end }}
 {{- end }}
