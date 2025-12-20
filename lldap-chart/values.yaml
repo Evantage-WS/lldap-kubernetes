@@ -82,6 +82,12 @@ service:
     ldaps: 6360
     web: 17170
 
+  # Override target ports to allow using different container ports than service ports
+  targetPortOverrides: {}
+    # ldap: 3890
+    # ldaps: 6360
+    # web: 17170
+
 ##### Ingress definition
 ingress:
   enabled: true
