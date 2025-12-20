@@ -84,6 +84,7 @@ The following table lists the configurable parameters of the lldap chart and the
 | `hpa.targetMemoryUtilizationPercentage` | Target memory utilization percentage for HPA               | `60`                                             |
 | `service.name`                          | Name of the Kubernetes service                             | `"lldap-service"`                                |
 | `service.type`                          | Service type                                               | `"ClusterIP"`                                    |
+| `service.annotations`                   | Annotations for the service                                | `{}`                                             |
 | `service.ports`                         | List of service ports                                      | See `values.yaml`                                |
 | `service.targetPortOverrides`           | Override target ports for the container                    | `{}`                                             |
 | `ingress.enabled`                       | Enable Ingress                                             | `false`                                          |
