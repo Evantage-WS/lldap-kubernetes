@@ -87,13 +87,13 @@ spec:
             {{- end }}
           ports:
             - name: ldap
-              containerPort: {{ .Values.service.ports.ldap }}
+              containerPort: {{ .Values.service.targetPortOverrides.ldap | default .Values.service.ports.ldap }}
             {{- if include "lldap.sslEnabled" . }}
             - name: ldaps
-              containerPort: {{ .Values.service.ports.ldaps }}
+              containerPort: {{ .Values.service.targetPortOverrides.ldaps | default .Values.service.ports.ldaps }}
             {{- end }}
             - name: web
-              containerPort: {{ .Values.service.ports.web }}
+              containerPort: {{ .Values.service.targetPortOverrides.web | default .Values.service.ports.web }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - mountPath: /data
