@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'lldap-chart/**'
+      - 'charts/**'
   push:
     branches:
       - main
     paths:
-      - 'lldap-chart/**'
+      - 'charts/**'
 
 jobs:
   helm-precheck:
@@ -27,7 +27,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Helm Lint
-        run: helm lint ./lldap-chart
+        run: helm lint ./charts/lldap
 
       - name: Helm Template Dry-Run
-        run: helm template lldap ./lldap-chart --namespace default
+        run: helm template lldap ./charts/lldap --namespace default
