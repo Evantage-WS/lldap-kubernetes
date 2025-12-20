@@ -77,6 +77,7 @@ hpa:
 ##### Service definition
 service:
   type: ClusterIP
+  annotations: {}
   ports:
     ldap: 3890
     ldaps: 6360
