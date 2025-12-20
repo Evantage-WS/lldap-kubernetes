@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'lldap-chart/**'
+      - 'charts/**/Chart.yaml'
 
 jobs:
   release:
@@ -25,13 +25,13 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: List files
+      - name: List charts
         run: |
-          ls -la ./lldap-chart
+          ls -la ./charts
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1
         with:
-          charts_dir: ./lldap-chart
+          charts_dir: ./charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
