@@ -24,7 +24,7 @@ LLDAP_BASE_DN=dc=evantage,dc=nl # set your own is wanted
 
 kubectl create secret generic lldap-credentials \
   --from-literal=lldap-jwt-secret=${LLDAP_JWT_SECRET} \
-  --from-literal=lldap-key-seed=${LLDAP_KEY_SEED}
+  --from-literal=lldap-key-seed=${LLDAP_KEY_SEED} \
   --from-literal=lldap-ldap-user-pass=${LLDAP_LDAP_USER_PASS} \
   --from-literal=base-dn=${LLDAP_BASE_DN} \
   -n ${NAMESPACE}
