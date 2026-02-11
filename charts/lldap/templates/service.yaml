@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "lldap.fullname" . }}
+  name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "lldap.labels" . | nindent 4 }}

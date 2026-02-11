@@ -76,6 +76,7 @@ hpa:
 
 ##### Service definition
 service:
+  name: lldap-service
   type: ClusterIP
   annotations: {}
   ports:
