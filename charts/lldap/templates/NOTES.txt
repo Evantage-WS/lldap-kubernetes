@@ -10,11 +10,13 @@
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 {{- else if contains "LoadBalancer" .Values.service.type }}
-  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-        You can watch the status by running:
-          kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "lldap.fullname" . }}
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lldap.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ (index .Values.service.ports 0).port }}
+NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+You can watch the status by running:
+
+kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "lldap.fullname" . }}
+export SERVICE_HOST=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lldap.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "lldap.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo "http://${SERVICE_HOST:-$SERVICE_IP}:{{ .Values.service.ports.web }}"
 {{- else if contains "ClusterIP" .Values.service.type }}
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "lldap.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[2].containerPort}")
